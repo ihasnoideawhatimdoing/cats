@@ -16,7 +16,7 @@ function getCraftAllResourceButton(resourceName){
 function isResourceAboveThreshold(resource){
 	for (var i in gamePage.resPool.resources){
 		if (gamePage.resPool.resources[i].name == resource){
-			return gamePage.resPool.resources[0].value > (gamePage.resPool.resources[0].maxValue * resourceThreshold)
+			return gamePage.resPool.resources[i].value > (gamePage.resPool.resources[i].maxValue * resourceThreshold)
 		}
 	}
 }
