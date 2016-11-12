@@ -2,13 +2,10 @@
 resourceThreshold = 0.9;
 
 //get craft table button 
-function getCraftAllResourceButton(resourceName){
-	visibleResources = $("#craftContainer .resourceRow");
-	for (var i = 0; i < visibleResources.length; i++){
-		count = i+1;
-		var resource = $("#craftContainer .resourceRow:nth-child("+count+") td:contains('"+resourceName+"')");
-		if (resource.length != 0){
-			return $("#craftContainer .resourceRow:nth-child("+count+") a:contains('all')");
+function getCraftAllResourceButton(resource){
+	for (var i in gamePage.craftTable.resRows){
+		if (gamePage.craftTable.resRows[i].recipeRef.name == resource){
+			return gamePage.craftTable.resRows[i].aAll;
 		}
 	}
 }
