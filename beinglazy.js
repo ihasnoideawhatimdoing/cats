@@ -25,36 +25,26 @@ function isResourceAboveThreshold(resource){
 function autoConvert(){
 	//catnip -> wood
 	if (isResourceAboveThreshold("catnip")){
-		Console.log("converting catnip to wood...");
-		Console.log(getCraftAllResourceButton("wood"));
 		getCraftAllResourceButton("wood").click();
 	}
 
 	//wood -> beam
 	if (isResourceAboveThreshold("wood")){
-		Console.log("converting wood to beam...");
-		Console.log(getCraftAllResourceButton("beam"));
 		getCraftAllResourceButton("beam").click();
 	}
 
 	//coal -> steel
 	if (isResourceAboveThreshold("coal")){
-		Console.log("converting coal to steel...");
-		Console.log(getCraftAllResourceButton("steel"));
 		getCraftAllResourceButton("steel").click();
 	}
 
 	//mineral -> slab
 	if (isResourceAboveThreshold("minerals")){
-		Console.log("converting minerals to slab...");
-		Console.log(getCraftAllResourceButton("slab"));
 		getCraftAllResourceButton("slab").click();
 	}
 
 	//iron -> plate
 	if (isResourceAboveThreshold("iron")){
-		Console.log("converting iron to plate...");
-		Console.log(getCraftAllResourceButton("plate"));
 		getCraftAllResourceButton("plate").click();
 	}
 }
@@ -70,6 +60,10 @@ function autoConvert(){
 // auto hunt
 // hunt at >90% cat power
 // cycle? 5?
+
+function testlog(){
+	console.log("i don't know js");
+}
 
 function observeTheSky () { $("#observeBtn").click(); }
 
