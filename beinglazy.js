@@ -4,7 +4,7 @@ resourceThreshold = 0.9;
 religionTabCanUpgrade = true;
 
 //resource current max tuple
-var resourceCurrMaxTuple = { current = 0, max = 0 }
+var resourceCurrMaxTuple = { current = 0, max = 0 };
 
 //get craft table button 
 function getCraftAllResourceButton(resource){
