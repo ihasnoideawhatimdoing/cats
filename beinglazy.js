@@ -129,7 +129,7 @@ function autoTrade(){
 
 function autoHunt(){
   if (huntToggle){
-    gamePage.villageTab.huntBtn.onClick();
+    gamePage.village.huntAll();
     if (getResource("ivory").value > rareResources.ivory.targetThreshold
       && getResource("furs").value > rareResources.furs.targetThreshold){
       rareResources.ivory.targetThreshold = rareResources.ivory.targetThreshold * ivoryThresholdIncrease;
