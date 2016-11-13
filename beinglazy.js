@@ -168,7 +168,7 @@ function autoPaperManagement(){
   }
   
   if ((getResource("science").maxValue * resourceThreshold) < getResource("science").value
-    && getResourceRow("compedium").recipeRef.prices[0] < getResource("manuscript").value){
+    && getResourceRow("compedium").recipeRef.prices[0].val < getResource("manuscript").value){
     getCraftSingleResourceButton("compedium").click();
   }
 }
