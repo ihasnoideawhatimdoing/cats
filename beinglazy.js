@@ -115,28 +115,29 @@ function autoPray(){
 }
 
 function autoTrade(){
-  if (!religionTabCanUpgrade && tradeToggle 
-    && (getResource("gold").value > getResource("gold").maxValue * goldThreshold)
-    && (getResource("manpower").value > getResource("manpower").maxValue * catPowerThreshold)) {
+  if (tradeToggle){
+    if (!religionTabCanUpgrade && (getResource("gold").value > getResource("gold").maxValue * goldThreshold)
+      && (getResource("manpower").value > getResource("manpower").maxValue * catPowerThreshold)) {
       
-    for (var i in gamePage.diplomacyTab.racePanels){
-      gamePage.diplomacyTab.racePanels[i].tradeBtn.onClick();
+      for (var i in gamePage.diplomacyTab.racePanels){
+        gamePage.diplomacyTab.racePanels[i].tradeBtn.onClick();
+      }
     }
-  }
-  //religion upgrade prevent trading
-  else if (!religionTabCanUpgrade){
-    tradeToggle = false;
-    huntToggle = true;
-    console.log("waiting for religious upgrade\nstop trading, start hunting");
-  }
-  //check if spice requirement reached
-  if (getResource("spice") > rareResources.spice.targetThreshold){
-    console.log("threshold for spice, " + resource.spice.targetThreshold + " reached");
-    rareResources.spice.targetThreshold = rareResources.spice.targetThreshold * spiceThresholdIncrease;
-    console.log("updating spice threshold to " + rareResources.spice.targetThreshold);
-    tradeToggle = false;
-    huntToggle = true;
-    console.log("stop trading, start hunting");
+    //religion upgrade prevent trading
+    else if (religionTabCanUpgrade){
+      tradeToggle = false;
+      huntToggle = true;
+      console.log("waiting for religious upgrade\nstop trading, start hunting");
+    }
+    //check if spice requirement reached
+    if (getResource("spice") > rareResources.spice.targetThreshold){
+      console.log("threshold for spice, " + resource.spice.targetThreshold + " reached");
+      rareResources.spice.targetThreshold = rareResources.spice.targetThreshold * spiceThresholdIncrease;
+      console.log("updating spice threshold to " + rareResources.spice.targetThreshold);
+      tradeToggle = false;
+      huntToggle = true;
+      console.log("stop trading, start hunting");
+    }
   }
 }
 
