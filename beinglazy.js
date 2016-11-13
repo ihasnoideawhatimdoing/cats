@@ -146,11 +146,14 @@ function autoHunt(){
 
 function autoPaperManagement(){
   getCraftSingleResourceButton("manuscript").click();
-  if (getResource("furs").value > rareResources.furs.minThreshold){
-    getCraftSingleResourceButton("parchment").click();
-  }
   if (getResource("science").value > (getResource("science").maxValue * resourceThreshold)){
     getCraftSingleResourceButton("compedium").click();
+  }
+}
+
+function autoParchmentManagement(){
+  if (getResource("furs").value > rareResources.furs.minThreshold){
+    getCraftSingleResourceButton("parchment").click();
   }
 }
 
@@ -183,6 +186,8 @@ function beLazy(){
   hunt = setInterval(autoHunt, 10*1000);
   trade = setInterval(autoTrade, 10*1000);
   paperManagement = setInterval(autoPaperManagement, 10*1000);
+  //every five minutes for parchment conversion
+  parchmentManagement = setInterval(autoParchmentManagement, 300*1000);
 }
 
 function stopBeingLazy(){
@@ -192,4 +197,5 @@ function stopBeingLazy(){
   clearInterval(hunt);
   clearInterval(trade);
   clearInterval(paperManagement);
+  clearInterval(parchmentManagement);
 }
