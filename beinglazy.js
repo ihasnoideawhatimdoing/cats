@@ -1,12 +1,27 @@
-//resource fullness before convert
+//some constants
 resourceThreshold = 0.9;
+catPowerThreshold = 0.5;
+spiceThresholdIncrease = 1.1;
+furThresholdIncrease = 1.1;
+ivoryThresholdIncrease = 1.1;
 
 religionTabCanUpgrade = true;
+tradeToggle = false;
+huntToggle = true;
 
-//resource current max tuple
+//initialize some stuff
 resourceCurrMaxTuple = {};
 resourceCurrMaxTuple.current = 0;
 resourceCurrMaxTuple.max = 0;
+
+rareResources = {};
+rareResources.ivory = {};
+rareResources.ivory.targetThreshold = 0;
+rareResources.spice = {};
+rareResources.spice.targetThreshold = 0;
+rareResources.furs = {};
+rareResources.furs.targetThreshold = 0;
+rareResources.furs.minThreshold = 0;
 
 //get craft table button 
 function getCraft25ResourceButton(resource){
@@ -88,20 +103,56 @@ function autoUpgradeReligion(){
 function autoPray(){
   updateReligionTabUpgradibility();
   getResourceCurrentAndMax("faith");
-  if (!religionTabCanUpgrade && (resourceCurrMaxTuple.current > (resourceCurrMaxTuple.max / 2))){
+  if (!religionTabCanUpgrade && (resourceCurrMaxTuple.current > (resourceCurrMaxTuple.max / 2))) {
     gamePage.religionTab.praiseBtn.onClick();
   } else {
     autoUpgradeReligion();
   }
 }
 
-// auto trade (when cat power > 50%)
-// ^^ if saving up, don't trade because uses gold
-// else trade in order
+function autoTrade(){
+  if (!religionTabCanUpgrade && tradeToggle 
+    && (getResource("gold").value > getResource("gold").maxValue * catPowerThreshold)
+    && (getResource("manpower").value > getResource("manpower").maxValue * catPowerThreshold)) {
+      
+    for (var i in gamePage.diplomacyTab.racePanels){
+      gamePage.diplomacyTab.racePanels[i].tradeBtn.onClick();
+      if (getResource("spice") > rareResources.spice.targetThreshold){
+        rareResources.spice.targetThreshold = rareResources.spice.targetThreshold * spiceThresholdIncrease;
+        tradeToggle = false;
+        huntToggle = true;
+      }
+    }
+  }
+}
 
-// auto hunt
-// hunt at >90% cat power
-// cycle? 5?
+function autoHunt(){
+  if (huntToggle){
+    gamePage.villageTab.huntBtn.onClick();
+    if (getResource("ivory").value > rareResources.ivory.targetThreshold
+      && getResource("furs").value > rareResources.furs.targetThreshold){
+      rareResources.ivory.targetThreshold = rareResources.ivory.targetThreshold * ivoryThresholdIncrease;
+      rareResources.furs.minThreshold = rareResources.furs.targetThreshold;
+      rareResources.furs.targetThreshold = rareResources.furs.targetThreshold * furThresholdIncrease;
+      huntToggle = false;
+      tradeToggle = true;
+    }
+  }
+}
+
+/* 
+parchment management
+
+always convert to manuscript
+
+convert fur -> parchment ***special***
+var min amount = current * 0.9
+
+once targetthreshold update, update min amount
+
+if lower than min amount -> stop
+
+*/
 
 //utility
 function getResourceCurrentAndMax(resource){
@@ -117,20 +168,32 @@ function getResource(resource){
   }
 }
 
+function populateRareResourceThreshold(){
+  rareResources.ivory.targetThreshold = getResource("ivory").value * 1.1;
+  rareResources.spice.targetThreshold = getResource("spice").value * 1.1;
+  rareResources.furs.targetThreshold = getResource("furs").value * 1.1;
+  rareResources.furs.minThreshold = getResource("furs").value * 0.9;
+}
+
 function testlog(){
   console.log("i don't know js");
 }
 
 function observeTheSky () { $("#observeBtn").click(); }
 
-function beingLazy(){
+function beLazy(){
+  populateRareResourceThreshold();
   observe = setInterval(observeTheSky, 3*1000);
   basicConvert = setInterval(autoConvert, 2*1000);
   pray = setInterval(autoPray, 5*1000);
+  hunt = setInterval(autoHunt, 10*1000);
+  trade = setInterval(autoTrade, 10*1000);
 }
 
 function stopBeingLazy(){
   clearInterval(observe);
   clearInterval(basicConvert);
   clearInterval(pray);
+  clearInterval(hunt);
+  clearInterval(trade);
 }
