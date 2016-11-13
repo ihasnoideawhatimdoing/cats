@@ -1,9 +1,10 @@
 //some constants
 resourceThreshold = 0.9;
+goldThreshold = 0.2;
 catPowerThreshold = 0.5;
-spiceThresholdIncrease = 1.1;
-furThresholdIncrease = 1.1;
-ivoryThresholdIncrease = 1.1;
+spiceThresholdIncrease = 1.05;
+furThresholdIncrease = 1.03;
+ivoryThresholdIncrease = 1.03;
 
 religionTabCanUpgrade = true;
 tradeToggle = false;
@@ -112,7 +113,7 @@ function autoPray(){
 
 function autoTrade(){
   if (!religionTabCanUpgrade && tradeToggle 
-    && (getResource("gold").value > getResource("gold").maxValue * catPowerThreshold)
+    && (getResource("gold").value > getResource("gold").maxValue * goldThreshold)
     && (getResource("manpower").value > getResource("manpower").maxValue * catPowerThreshold)) {
       
     for (var i in gamePage.diplomacyTab.racePanels){
