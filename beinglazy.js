@@ -9,10 +9,10 @@ resourceCurrMaxTuple.current = 0;
 resourceCurrMaxTuple.max = 0;
 
 //get craft table button 
-function getCraftAllResourceButton(resource){
+function getCraft25ResourceButton(resource){
 	for (var i in gamePage.craftTable.resRows){
 		if (gamePage.craftTable.resRows[i].recipeRef.name == resource){
-			return gamePage.craftTable.resRows[i].aAll;
+			return gamePage.craftTable.resRows[i].a25;
 		}
 	}
 }
@@ -25,54 +25,71 @@ function isResourceAboveThreshold(resource){
 function autoConvert(){
 	//catnip -> wood
 	if (isResourceAboveThreshold("catnip")){
-		getCraftAllResourceButton("wood").click();
+		getCraft25ResourceButton("wood").click();
 	}
 
 	//wood -> beam
 	if (isResourceAboveThreshold("wood")){
-		getCraftAllResourceButton("beam").click();
+		getCraft25ResourceButton("beam").click();
 	}
 
 	//coal -> steel
 	if (isResourceAboveThreshold("coal")){
-		getCraftAllResourceButton("steel").click();
+		getCraft25ResourceButton("steel").click();
 	}
 
 	//mineral -> slab
 	if (isResourceAboveThreshold("minerals")){
-		getCraftAllResourceButton("slab").click();
+		getCraft25ResourceButton("slab").click();
 	}
 
 	//iron -> plate
 	if (isResourceAboveThreshold("iron")){
-		getCraftAllResourceButton("plate").click();
+		getCraft25ResourceButton("plate").click();
 	}
 }
 
 // auto pray
 function updateReligionTabUpgradibility(){
+  resourceCapOkay = true;
+  upgradesRemaining = false;
+
 	for (var i in gamePage.religionTab.rUpgradeButtons){
-		if (!gamePage.religionTab.rUpgradeButtons[i].getName().inludes("complete")){
+    //look for upgrades haven't been completed yet
+		if (!gamePage.religionTab.rUpgradeButtons[i].getName().includes("complete")){
+      upgradesRemaining = true;
 			//check if resource cap is limiting			
 			for (var j in gamePage.religionTab.rUpgradeButtons[i].getPrices()){
 				var res = gamePage.religionTab.rUpgradeButtons[i].getPrices()[j];
 				getResourceCurrentAndMax(res.name);
-				if ((getResourceCurrentAndMax.max * resourceThreshold) > res.val){
-					religionTabCanUpgrade = true;
-					return;
+				if ((getResourceCurrentAndMax.max * resourceThreshold) < res.val){
+					resourceCapOkay = false;
 				}
 			}
 		}
 	}
-  //looped through all upgrades, nothing upgradable
-  religionTabCanUpgrade = false;
+
+  //upgrade button with no (complete), no upgrades require more than cap
+  religionTabCanUpgrade = (upgradesRemaining && resourceCapOkay);
   return;
+}
+
+function autoReligionUpgrade(){
+  for (var i in gamePage.religionTab.rUpgradeButtons){
+    //look for upgrades haven't been completed yet
+    if (!gamePage.religionTab.rUpgradeButtons[i].getName().includes("complete")){
+      //TODO
+    }
+  }
 }
 
 function autoPray(){
   updateReligionTabUpgradibility();
-  if (!religionTabCanUpgrade){
+  getResourceCurrentAndMax("faith");
+  if (!religionTabCanUpgrade && (resourceCurrMaxTuple.current > (resourceCurrMaxTuple.max / 2))){
     gamePage.religionTab.praiseBtn.onClick();
+  } else {
+    //autoReligionUpgrade();
   }
 }
 
@@ -86,8 +103,8 @@ function autoPray(){
 
 //utility
 function getResourceCurrentAndMax(resource){
-	resourceCurMaxTuple.current = getResource(resource).value;
-	getResourceCurrentAndMax.max = getResource(resource).maxValue;
+	resourceCurrMaxTuple.current = getResource(resource).value;
+	resourceCurrMaxTuple.max = getResource(resource).maxValue;
 }
 
 function getResource(resource){
@@ -107,7 +124,7 @@ function observeTheSky () { $("#observeBtn").click(); }
 function beingLazy(){
 	observe = setInterval(observeTheSky, 3*1000);
 	basicConvert = setInterval(autoConvert, 2*1000);
-  pray = setInterval(autoConvert, 5*1000);
+  pray = setInterval(autoPray, 5*1000);
 }
 
 function stopBeingLazy(){
