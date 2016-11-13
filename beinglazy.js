@@ -180,10 +180,10 @@ function getResource(resource){
 }
 
 function populateRareResourceThreshold(){
-  rareResources.ivory.targetThreshold = getResource("ivory").value * 1.1;
-  rareResources.spice.targetThreshold = getResource("spice").value * 1.1;
-  rareResources.furs.targetThreshold = getResource("furs").value * 1.1;
-  rareResources.furs.minThreshold = getResource("furs").value * 0.9;
+  rareResources.ivory.targetThreshold = getResource("ivory").value * ivoryThresholdIncrease;
+  rareResources.spice.targetThreshold = getResource("spice").value * spiceThresholdIncrease;
+  rareResources.furs.targetThreshold = getResource("furs").value * furThresholdIncrease;
+  rareResources.furs.minThreshold = getResource("furs").value * resourceThreshold;
 }
 
 function testlog(){
