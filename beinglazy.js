@@ -2,19 +2,15 @@
 resourceThreshold = 0.9;
 goldThreshold = 0.2;
 catPowerThreshold = 0.5;
-spiceThresholdIncrease = 1.05;
-furThresholdIncrease = 1.03;
-ivoryThresholdIncrease = 1.03;
+spiceThresholdIncrease = 1.04;
+furThresholdIncrease = 1.02;
+ivoryThresholdIncrease = 1.02;
 
 religionTabCanUpgrade = true;
 tradeToggle = false;
 huntToggle = true;
 
 //initialize some stuff
-resourceCurrMaxTuple = {};
-resourceCurrMaxTuple.current = 0;
-resourceCurrMaxTuple.max = 0;
-
 rareResources = {};
 rareResources.ivory = {};
 rareResources.ivory.targetThreshold = 0;
@@ -29,6 +25,14 @@ function getCraft25ResourceButton(resource){
   for (var i in gamePage.craftTable.resRows){
     if (gamePage.craftTable.resRows[i].recipeRef.name == resource){
       return gamePage.craftTable.resRows[i].a25;
+    }
+  }
+}
+
+function getCraftSingleResourceButton(resource){
+  for (var i in gamePage.craftTable.resRows){
+    if (gamePage.craftTable.resRows[i].recipeRef.name == resource){
+      return gamePage.craftTable.resRows[i].a1;
     }
   }
 }
@@ -103,8 +107,7 @@ function autoUpgradeReligion(){
 
 function autoPray(){
   updateReligionTabUpgradibility();
-  getResourceCurrentAndMax("faith");
-  if (!religionTabCanUpgrade && (resourceCurrMaxTuple.current > (resourceCurrMaxTuple.max / 2))) {
+  if (!religionTabCanUpgrade && (getResource("faith").value > (getResource("faith").maxValue / 2))) {
     gamePage.religionTab.praiseBtn.onClick();
   } else {
     autoUpgradeReligion();
@@ -141,24 +144,14 @@ function autoHunt(){
   }
 }
 
-/* 
-parchment management
-
-always convert to manuscript
-
-convert fur -> parchment ***special***
-var min amount = current * 0.9
-
-once targetthreshold update, update min amount
-
-if lower than min amount -> stop
-
-*/
-
-//utility
-function getResourceCurrentAndMax(resource){
-  resourceCurrMaxTuple.current = getResource(resource).value;
-  resourceCurrMaxTuple.max = getResource(resource).maxValue;
+function autoPaperManagement(){
+  getCraftSingleResourceButton("manuscript").onClick();
+  if (getResource("furs").value > rareResources.furs.minThreshold){
+    getCraftSingleResourceButton("parchment").onClick();
+  }
+  if (getResource("science").value > (getResource("science").maxValue * resourceThreshold)){
+    getCraftSingleResourceButton("compedium").onClick();
+  }
 }
 
 function getResource(resource){
@@ -189,6 +182,7 @@ function beLazy(){
   pray = setInterval(autoPray, 5*1000);
   hunt = setInterval(autoHunt, 10*1000);
   trade = setInterval(autoTrade, 10*1000);
+  paperManagement = setInterval(autoPaperManagement, 10*1000);
 }
 
 function stopBeingLazy(){
@@ -197,4 +191,5 @@ function stopBeingLazy(){
   clearInterval(pray);
   clearInterval(hunt);
   clearInterval(trade);
+  clearInterval(paperManagement);
 }
