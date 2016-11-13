@@ -161,12 +161,14 @@ function autoHunt(){
   }
 }
 
-function autoPaperManagement(){
+function autoManuscriptManagement(){
   if (getResourceRow("manuscript").recipeRef.prices[0].val < getResource("parchment").value
     && getResourceRow("manuscript").recipeRef.prices[1].val < getResource("culture").value){
     getCraftSingleResourceButton("manuscript").click();
   }
-  
+}
+
+function autoCompendiumManagement(){
   if ((getResource("science").maxValue * resourceThreshold) < getResource("science").value
     && getResourceRow("compedium").recipeRef.prices[0].val < getResource("manuscript").value){
     getCraftSingleResourceButton("compedium").click();
@@ -207,7 +209,8 @@ function beLazy(){
   pray = setInterval(autoPray, 5*1000);
   hunt = setInterval(autoHunt, 10*1000);
   trade = setInterval(autoTrade, 10*1000);
-  paperManagement = setInterval(autoPaperManagement, 10*1000);
+  manuscriptManagement = setInterval(autoManuscriptManagement, 10*1000);
+  compendiumManagement = setInterval(autoCompendiumManagement, 10*1000);
   //every five minutes for parchment conversion
   parchmentManagement = setInterval(autoParchmentManagement, 300*1000);
 }
@@ -218,6 +221,7 @@ function stopBeingLazy(){
   clearInterval(pray);
   clearInterval(hunt);
   clearInterval(trade);
-  clearInterval(paperManagement);
+  clearInterval(manuscriptManagement);
   clearInterval(parchmentManagement);
+  clearInterval(compendiumManagement);
 }
