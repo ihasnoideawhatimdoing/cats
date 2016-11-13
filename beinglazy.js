@@ -145,12 +145,12 @@ function autoHunt(){
 }
 
 function autoPaperManagement(){
-  getCraftSingleResourceButton("manuscript").onClick();
+  getCraftSingleResourceButton("manuscript").click();
   if (getResource("furs").value > rareResources.furs.minThreshold){
-    getCraftSingleResourceButton("parchment").onClick();
+    getCraftSingleResourceButton("parchment").click();
   }
   if (getResource("science").value > (getResource("science").maxValue * resourceThreshold)){
-    getCraftSingleResourceButton("compedium").onClick();
+    getCraftSingleResourceButton("compedium").click();
   }
 }
 
