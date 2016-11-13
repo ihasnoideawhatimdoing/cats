@@ -138,8 +138,8 @@ function autoHunt(){
     gamePage.village.huntAll();
     if (getResource("ivory").value > rareResources.ivory.targetThreshold
       && getResource("furs").value > rareResources.furs.targetThreshold){
-      console.log("threshold for furs, " + resource.furs.targetThreshold + " reached");
-      console.log("threshold for ivory, " + resource.ivory.targetThreshold + " reached");
+      console.log("threshold for furs, " + rareResources.furs.targetThreshold + " reached");
+      console.log("threshold for ivory, " + rareResources.ivory.targetThreshold + " reached");
       rareResources.ivory.targetThreshold = rareResources.ivory.targetThreshold * ivoryThresholdIncrease;
       rareResources.furs.minThreshold = rareResources.furs.targetThreshold;
       rareResources.furs.targetThreshold = rareResources.furs.targetThreshold * furThresholdIncrease;
