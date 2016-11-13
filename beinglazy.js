@@ -55,16 +55,18 @@ function updateReligionTabUpgradibility(){
   upgradesRemaining = false;
 
   for (var i in gamePage.religionTab.rUpgradeButtons){
-    //look for upgrades haven't been completed yet
-    if (!gamePage.religionTab.rUpgradeButtons[i].getName().includes("complete")){
+    //look for available upgrades haven't been completed yet
+    if (gamePage.religionTab.rUpgradeButtons[i].visible && !gamePage.religionTab.rUpgradeButtons[i].getName().includes("complete")){
       upgradesRemaining = true;
-      //check if resource cap is limiting			
-      for (var j in gamePage.religionTab.rUpgradeButtons[i].getPrices()){
-        var res = gamePage.religionTab.rUpgradeButtons[i].getPrices()[j];
-        getResourceCurrentAndMax(res.name);
-        if ((getResourceCurrentAndMax.max * resourceThreshold) < res.val){
-          resourceCapOkay = false;
-        }
+      rUpgrade = gamePage.religionTab.rUpgradeButtons[i];
+      //check if faith and gold resource cap is limiting
+      if (rUpgrade.getPrices()[0] > (getResource("faith").maxValue * resourceThreshold)){
+        resourceCapOkay = false;
+        break;        
+      }
+      if (rUpgrade.getPrices()[1] != null && rUpgrade.getPrices()[1] > (getResource("gold").maxValue * resourceThreshold)){
+        resourceCapOkay = false;
+        break;
       }
     }
   }
@@ -74,11 +76,11 @@ function updateReligionTabUpgradibility(){
   return;
 }
 
-function autoReligionUpgrade(){
-  for (var i in gamePage.religionTab.rUpgradeButtons){
-    //look for upgrades haven't been completed yet
-    if (!gamePage.religionTab.rUpgradeButtons[i].getName().includes("complete")){
-      //TODO
+function autoUpgradeReligion(){
+  if (religionTabCanUpgrade){
+    for (var i in gamePage.religionTab.rUpgradeButtons){
+      //blindly click, easier than checking resource req again
+      gamePage.religionTab.rUpgradeButtons[i].onClick();
     }
   }
 }
@@ -89,7 +91,7 @@ function autoPray(){
   if (!religionTabCanUpgrade && (resourceCurrMaxTuple.current > (resourceCurrMaxTuple.max / 2))){
     gamePage.religionTab.praiseBtn.onClick();
   } else {
-    //autoReligionUpgrade();
+    autoUpgradeReligion();
   }
 }
 
