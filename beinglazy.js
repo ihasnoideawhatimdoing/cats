@@ -22,17 +22,17 @@ rareResources.furs.minThreshold = 0;
 
 //get craft table button 
 function getCraft25ResourceButton(resource){
-  for (var i in gamePage.craftTable.resRows){
-    if (gamePage.craftTable.resRows[i].recipeRef.name == resource){
-      return gamePage.craftTable.resRows[i].a25;
-    }
-  }
+  return getResourceRow(resource).a25;
 }
 
 function getCraftSingleResourceButton(resource){
+  return getResourceRow(resource).a1;
+}
+
+function getResourceRow(resource){
   for (var i in gamePage.craftTable.resRows){
     if (gamePage.craftTable.resRows[i].recipeRef.name == resource){
-      return gamePage.craftTable.resRows[i].a1;
+      return gamePage.craftTable.resRows[i];
     }
   }
 }
@@ -122,9 +122,12 @@ function autoTrade(){
     for (var i in gamePage.diplomacyTab.racePanels){
       gamePage.diplomacyTab.racePanels[i].tradeBtn.onClick();
       if (getResource("spice") > rareResources.spice.targetThreshold){
+        console.log("threshold for spice, " + resource.spice.targetThreshold + " reached");
         rareResources.spice.targetThreshold = rareResources.spice.targetThreshold * spiceThresholdIncrease;
+        console.log("updating spice threshold to " + rareResources.spice.targetThreshold);
         tradeToggle = false;
         huntToggle = true;
+        console.log("stop trading, start hunting");
       }
     }
   }
@@ -135,18 +138,29 @@ function autoHunt(){
     gamePage.village.huntAll();
     if (getResource("ivory").value > rareResources.ivory.targetThreshold
       && getResource("furs").value > rareResources.furs.targetThreshold){
+      console.log("threshold for furs, " + resource.furs.targetThreshold + " reached");
+      console.log("threshold for ivory, " + resource.ivory.targetThreshold + " reached");
       rareResources.ivory.targetThreshold = rareResources.ivory.targetThreshold * ivoryThresholdIncrease;
       rareResources.furs.minThreshold = rareResources.furs.targetThreshold;
       rareResources.furs.targetThreshold = rareResources.furs.targetThreshold * furThresholdIncrease;
+      console.log("updating furs threshold to " + rareResources.furs.targetThreshold);
+      console.log("updating furs minimum threshold to " + rareResources.furs.minThreshold);
+      console.log("updating ivory threshold to " + rareResources.ivory.targetThreshold);
       huntToggle = false;
       tradeToggle = true;
+      console.log("stop hunting, start trading");
     }
   }
 }
 
 function autoPaperManagement(){
-  getCraftSingleResourceButton("manuscript").click();
-  if (getResource("science").value > (getResource("science").maxValue * resourceThreshold)){
+  if (getResourceRow("manuscript").recipeRef.prices[0].val < getResource("parchment").value
+    && getResourceRow("manuscript").recipeRef.prices[1].val < getResource("culture").value){
+    getCraftSingleResourceButton("manuscript").click();
+  }
+  
+  if ((getResource("science").maxValue * resourceThreshold) < getResource("science").value
+    && getResourceRow("compedium").recipeRef.prices[0] < getResource("manuscript").value){
     getCraftSingleResourceButton("compedium").click();
   }
 }
