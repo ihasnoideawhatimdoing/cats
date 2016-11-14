@@ -133,7 +133,7 @@ function autoTrade(){
 
     //check if spice requirement reached
     if (getResource("spice").value > rareResources.spice.targetThreshold){
-      console.log("threshold for spice, " + rareResource.spice.targetThreshold + " reached");
+      console.log("threshold for spice, " + rareResources.spice.targetThreshold + " reached");
       rareResources.spice.targetThreshold = rareResources.spice.targetThreshold * spiceThresholdIncrease;
       console.log("updating spice threshold to " + rareResources.spice.targetThreshold);
       tradeToggle = false;
