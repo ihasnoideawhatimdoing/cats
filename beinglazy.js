@@ -1,6 +1,6 @@
 //some constants
 resourceThreshold = 0.9;
-goldThreshold = 0.2;
+goldThreshold = 0.1;
 catPowerThreshold = 0.5;
 spiceThresholdIncrease = 1.04;
 furThresholdIncrease = 1.02;
@@ -132,7 +132,7 @@ function autoTrade(){
     };
 
     //check if spice requirement reached
-    if (getResource("spice") > rareResources.spice.targetThreshold){
+    if (getResource("spice").value > rareResources.spice.targetThreshold){
       console.log("threshold for spice, " + resource.spice.targetThreshold + " reached");
       rareResources.spice.targetThreshold = rareResources.spice.targetThreshold * spiceThresholdIncrease;
       console.log("updating spice threshold to " + rareResources.spice.targetThreshold);
@@ -213,8 +213,8 @@ function beLazy(){
   trade = setInterval(autoTrade, 10*1000);
   manuscriptManagement = setInterval(autoManuscriptManagement, 10*1000);
   compendiumManagement = setInterval(autoCompendiumManagement, 10*1000);
-  //every five minutes for parchment conversion
-  parchmentManagement = setInterval(autoParchmentManagement, 300*1000);
+  //every two minutes for parchment conversion
+  parchmentManagement = setInterval(autoParchmentManagement, 120*1000);
 }
 
 function stopBeingLazy(){
