@@ -121,14 +121,16 @@ function autoTrade(){
       
       for (var i in gamePage.diplomacyTab.racePanels){
         gamePage.diplomacyTab.racePanels[i].tradeBtn.onClick();
-      }
+      };
     }
+
     //religion upgrade prevent trading
-    else if (religionTabCanUpgrade){
+    if (religionTabCanUpgrade){
       tradeToggle = false;
       huntToggle = true;
       console.log("waiting for religious upgrade\nstop trading, start hunting");
-    }
+    };
+
     //check if spice requirement reached
     if (getResource("spice") > rareResources.spice.targetThreshold){
       console.log("threshold for spice, " + resource.spice.targetThreshold + " reached");
@@ -137,8 +139,8 @@ function autoTrade(){
       tradeToggle = false;
       huntToggle = true;
       console.log("stop trading, start hunting");
-    }
-  }
+    };
+  };
 }
 
 function autoHunt(){
