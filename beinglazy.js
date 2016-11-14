@@ -122,6 +122,7 @@ function autoTrade(){
       for (var i in gamePage.diplomacyTab.racePanels){
         gamePage.diplomacyTab.racePanels[i].tradeBtn.onClick();
       };
+      gamePage.villageTab.huntBtn.onClick();
     }
 
     //religion upgrade prevent trading
@@ -214,7 +215,7 @@ function beLazy(){
   manuscriptManagement = setInterval(autoManuscriptManagement, 10*1000);
   compendiumManagement = setInterval(autoCompendiumManagement, 10*1000);
   //every two minutes for parchment conversion
-  parchmentManagement = setInterval(autoParchmentManagement, 120*1000);
+  parchmentManagement = setInterval(autoParchmentManagement, 50*1000);
 }
 
 function stopBeingLazy(){
