@@ -74,7 +74,7 @@ function updateReligionTabUpgradibility(){
   let resourceCapOkay = true;
   let upgradesRemaining = false;
 
-  if (gamePage.religionTab.trancendBtn.visible != 1){
+  if (gamePage.religionTab.transcendBtn.visible != 1){
     for (var i in gamePage.religionTab.rUpgradeButtons){
       //look for available upgrades haven't been completed yet
       if (gamePage.religionTab.rUpgradeButtons[i].visible && !gamePage.religionTab.rUpgradeButtons[i].getName().includes("complete")){
