@@ -1,10 +1,10 @@
 //some constants
-resourceThreshold = 0.9;
-goldThreshold = 0.1;
+resourceThreshold = 0.95;
+goldThreshold = 0.05;
 catPowerThreshold = 0.5;
-spiceThresholdIncrease = 1.04;
-furThresholdIncrease = 1.02;
-ivoryThresholdIncrease = 1.02;
+spiceThresholdIncrease = 1.02;
+furThresholdIncrease = 1.01;
+ivoryThresholdIncrease = 1.01;
 
 religionTabCanUpgrade = true;
 tradeToggle = false;
@@ -71,22 +71,24 @@ function autoConvert(){
 
 // auto pray
 function updateReligionTabUpgradibility(){
-  resourceCapOkay = true;
-  upgradesRemaining = false;
+  let resourceCapOkay = true;
+  let upgradesRemaining = false;
 
-  for (var i in gamePage.religionTab.rUpgradeButtons){
-    //look for available upgrades haven't been completed yet
-    if (gamePage.religionTab.rUpgradeButtons[i].visible && !gamePage.religionTab.rUpgradeButtons[i].getName().includes("complete")){
-      upgradesRemaining = true;
-      rUpgrade = gamePage.religionTab.rUpgradeButtons[i];
-      //check if faith and gold resource cap is limiting
-      if (rUpgrade.getPrices()[0] > (getResource("faith").maxValue * resourceThreshold)){
-        resourceCapOkay = false;
-        break;        
-      }
-      if (rUpgrade.getPrices()[1] != null && rUpgrade.getPrices()[1] > (getResource("gold").maxValue * resourceThreshold)){
-        resourceCapOkay = false;
-        break;
+  if (gamePage.religionTab.trancendBtn.visible != 1){
+    for (var i in gamePage.religionTab.rUpgradeButtons){
+      //look for available upgrades haven't been completed yet
+      if (gamePage.religionTab.rUpgradeButtons[i].visible && !gamePage.religionTab.rUpgradeButtons[i].getName().includes("complete")){
+        upgradesRemaining = true;
+        let rUpgrade = gamePage.religionTab.rUpgradeButtons[i];
+        //check if faith and gold resource cap is limiting
+        if (rUpgrade.getPrices()[0] > (getResource("faith").maxValue * resourceThreshold)){
+          resourceCapOkay = false;
+          break;        
+        }
+        if (rUpgrade.getPrices()[1] != null && rUpgrade.getPrices()[1] > (getResource("gold").maxValue * resourceThreshold)){
+          resourceCapOkay = false;
+          break;
+        }
       }
     }
   }
@@ -215,7 +217,7 @@ function beLazy(){
   manuscriptManagement = setInterval(autoManuscriptManagement, 10*1000);
   compendiumManagement = setInterval(autoCompendiumManagement, 10*1000);
   //every two minutes for parchment conversion
-  parchmentManagement = setInterval(autoParchmentManagement, 50*1000);
+  parchmentManagement = setInterval(autoParchmentManagement, 180*1000);
 }
 
 function stopBeingLazy(){
