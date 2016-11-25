@@ -29,6 +29,10 @@ function getCraftSingleResourceButton(resource){
   return getResourceRow(resource).a1;
 }
 
+function getCraftAllResourceButton(resource){
+  return getResourceRow(resource).aAll;
+}
+
 function getResourceRow(resource){
   for (var i in gamePage.craftTable.resRows){
     if (gamePage.craftTable.resRows[i].recipeRef.name == resource){
@@ -66,6 +70,11 @@ function autoConvert(){
   //iron -> plate
   if (isResourceAboveThreshold("iron")){
     getCraft25ResourceButton("plate").click();
+  }
+
+  //oil -> kerosene
+  if (isResourceAboveThreshold("oil")){
+    getCraftAllResourceButton("oil").click();
   }
 }
 
