@@ -48,32 +48,32 @@ function isResourceAboveThreshold(resource){
 // convert resources when >90% full
 function autoConvert(){
   //catnip -> wood
-  if (isResourceAboveThreshold("catnip")){
+  if (!getReourceRow("wood") && isResourceAboveThreshold("catnip")){
     getCraft25ResourceButton("wood").click();
   }
 
   //wood -> beam
-  if (isResourceAboveThreshold("wood")){
+  if (!getReourceRow("beam") && isResourceAboveThreshold("wood")){
     getCraft25ResourceButton("beam").click();
   }
 
   //coal -> steel
-  if (isResourceAboveThreshold("coal")){
+  if (!getReourceRow("steel") && isResourceAboveThreshold("coal")){
     getCraft25ResourceButton("steel").click();
   }
 
   //mineral -> slab
-  if (isResourceAboveThreshold("minerals")){
+  if (!getReourceRow("slab") && isResourceAboveThreshold("minerals")){
     getCraft25ResourceButton("slab").click();
   }
 
   //iron -> plate
-  if (isResourceAboveThreshold("iron")){
+  if (!getReourceRow("plate") && isResourceAboveThreshold("iron")){
     getCraft25ResourceButton("plate").click();
   }
 
   //oil -> kerosene
-  if (isResourceAboveThreshold("oil")){
+  if (!getReourceRow("kerosene") && isResourceAboveThreshold("oil")){
     getCraftAllResourceButton("kerosene").click();
   }
 }
@@ -108,7 +108,7 @@ function updateReligionTabUpgradibility(){
 }
 
 function autoUpgradeReligion(){
-  if (religionTabCanUpgrade){
+  if (gamePage.religionTab.visible && religionTabCanUpgrade){
     for (var i in gamePage.religionTab.rUpgradeButtons){
       //blindly click, easier than checking resource req again
       gamePage.religionTab.rUpgradeButtons[i].onClick();
@@ -118,7 +118,7 @@ function autoUpgradeReligion(){
 
 function autoPray(){
   updateReligionTabUpgradibility();
-  if (!religionTabCanUpgrade && (getResource("faith").value > (getResource("faith").maxValue / 2))) {
+  if (gamePage.religionTab.visible && !religionTabCanUpgrade && (getResource("faith").value > (getResource("faith").maxValue / 2))) {
     gamePage.religionTab.praiseBtn.onClick();
   } else {
     autoUpgradeReligion();
@@ -127,70 +127,82 @@ function autoPray(){
 
 function autoTrade(){
   if (tradeToggle){
-    if (!religionTabCanUpgrade && (getResource("gold").value > getResource("gold").maxValue * goldThreshold)
+    if (gamePage.diplomacyTab.visible && gamePage.diplomacyTab.racePanels.length != 0){
+      if (!religionTabCanUpgrade && (getResource("gold").value > getResource("gold").maxValue * goldThreshold)
       && (getResource("manpower").value > getResource("manpower").maxValue * catPowerThreshold)) {
       
-      for (var i in gamePage.diplomacyTab.racePanels){
-        gamePage.diplomacyTab.racePanels[i].tradeBtn.onClick();
+        for (var i in gamePage.diplomacyTab.racePanels){
+          gamePage.diplomacyTab.racePanels[i].tradeBtn.onClick();
+        };
+        gamePage.villageTab.huntBtn.onClick();
+      }
+
+      //religion upgrade prevent trading
+      if (religionTabCanUpgrade){
+        tradeToggle = false;
+        huntToggle = true;
+        console.log("waiting for religious upgrade\nstop trading, start hunting");
       };
-      gamePage.villageTab.huntBtn.onClick();
-    }
 
-    //religion upgrade prevent trading
-    if (religionTabCanUpgrade){
-      tradeToggle = false;
-      huntToggle = true;
-      console.log("waiting for religious upgrade\nstop trading, start hunting");
+      //check if spice requirement reached
+      if (getResource("spice").value > rareResources.spice.targetThreshold){
+        console.log("threshold for spice, " + rareResources.spice.targetThreshold + " reached");
+        rareResources.spice.targetThreshold = rareResources.spice.targetThreshold * spiceThresholdIncrease;
+        console.log("updating spice threshold to " + rareResources.spice.targetThreshold);
+        tradeToggle = false;
+        huntToggle = true;
+        console.log("stop trading, start hunting");
+      };
     };
-
-    //check if spice requirement reached
-    if (getResource("spice").value > rareResources.spice.targetThreshold){
-      console.log("threshold for spice, " + rareResources.spice.targetThreshold + " reached");
-      rareResources.spice.targetThreshold = rareResources.spice.targetThreshold * spiceThresholdIncrease;
-      console.log("updating spice threshold to " + rareResources.spice.targetThreshold);
-      tradeToggle = false;
-      huntToggle = true;
-      console.log("stop trading, start hunting");
-    };
-  };
+  } else {
+    tradeToggle = false;
+    huntToggle = true;
+  }
 }
 
 function autoHunt(){
   if (huntToggle){
-    gamePage.village.huntAll();
-    if (getResource("ivory").value > rareResources.ivory.targetThreshold
-      && getResource("furs").value > rareResources.furs.targetThreshold){
-      console.log("threshold for furs, " + rareResources.furs.targetThreshold + " reached");
-      console.log("threshold for ivory, " + rareResources.ivory.targetThreshold + " reached");
-      rareResources.ivory.targetThreshold = rareResources.ivory.targetThreshold * ivoryThresholdIncrease;
-      rareResources.furs.minThreshold = rareResources.furs.targetThreshold;
-      rareResources.furs.targetThreshold = rareResources.furs.targetThreshold * furThresholdIncrease;
-      console.log("updating furs threshold to " + rareResources.furs.targetThreshold);
-      console.log("updating furs minimum threshold to " + rareResources.furs.minThreshold);
-      console.log("updating ivory threshold to " + rareResources.ivory.targetThreshold);
+    if (gamePage.villageTab.huntBtn.visible){
+      gamePage.village.huntAll();
+      if (getResource("ivory").value > rareResources.ivory.targetThreshold
+        && getResource("furs").value > rareResources.furs.targetThreshold){
+        console.log("threshold for furs, " + rareResources.furs.targetThreshold + " reached");
+        console.log("threshold for ivory, " + rareResources.ivory.targetThreshold + " reached");
+        rareResources.ivory.targetThreshold = rareResources.ivory.targetThreshold * ivoryThresholdIncrease;
+        rareResources.furs.minThreshold = rareResources.furs.targetThreshold;
+        rareResources.furs.targetThreshold = rareResources.furs.targetThreshold * furThresholdIncrease;
+        console.log("updating furs threshold to " + rareResources.furs.targetThreshold);
+        console.log("updating furs minimum threshold to " + rareResources.furs.minThreshold);
+        console.log("updating ivory threshold to " + rareResources.ivory.targetThreshold);
+        huntToggle = false;
+        tradeToggle = true;
+        console.log("stop hunting, start trading");
+      }
+    } else {
       huntToggle = false;
       tradeToggle = true;
-      console.log("stop hunting, start trading");
     }
   }
 }
 
 function autoManuscriptManagement(){
-  if (getResourceRow("manuscript").recipeRef.prices[0].val < getResource("parchment").value
+  if (!getReourceRow("manuscript")
+    getResourceRow("manuscript").recipeRef.prices[0].val < getResource("parchment").value
     && getResourceRow("manuscript").recipeRef.prices[1].val < getResource("culture").value){
     getCraftSingleResourceButton("manuscript").click();
   }
 }
 
 function autoCompendiumManagement(){
-  if ((getResource("science").maxValue * resourceThreshold) < getResource("science").value
+  if (!getReourceRow("compedium")
+    (getResource("science").maxValue * resourceThreshold) < getResource("science").value
     && getResourceRow("compedium").recipeRef.prices[0].val < getResource("manuscript").value){
     getCraftSingleResourceButton("compedium").click();
   }
 }
 
 function autoParchmentManagement(){
-  if (getResource("furs").value > rareResources.furs.minThreshold){
+  if (!getReourceRow("parchment") getResource("furs").value > rareResources.furs.minThreshold){
     getCraftSingleResourceButton("parchment").click();
   }
 }
@@ -216,6 +228,12 @@ function testlog(){
 
 function observeTheSky () { $("#observeBtn").click(); }
 
+function setParchmentInterval(seconds){
+  clearInterval(parchmentManagement);
+  parchmentManagement = setInterval(autoParchmentManagement, seconds*1000);
+
+}
+
 function beLazy(){
   populateRareResourceThreshold();
   observe = setInterval(observeTheSky, 3*1000);
@@ -225,7 +243,7 @@ function beLazy(){
   trade = setInterval(autoTrade, 10*1000);
   manuscriptManagement = setInterval(autoManuscriptManagement, 10*1000);
   compendiumManagement = setInterval(autoCompendiumManagement, 10*1000);
-  //every two minutes for parchment conversion
+
   parchmentManagement = setInterval(autoParchmentManagement, 180*1000);
 }
 
