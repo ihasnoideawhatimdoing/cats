@@ -53,27 +53,27 @@ function isResourceUnlocked(resource){
 function autoConvert(){
   //catnip -> wood
   if (isResourceUnlocked("wood") && isResourceAboveThreshold("catnip")){
-    getCraft25ResourceButton("wood").click();
+    getCraftSingleResourceButton("wood").click();
   }
 
   //wood -> beam
   if (isResourceUnlocked("beam") && isResourceAboveThreshold("wood")){
-    getCraft25ResourceButton("beam").click();
+    getCraftSingleResourceButton("beam").click();
   }
 
   //coal -> steel
   if (isResourceUnlocked("steel") && isResourceAboveThreshold("coal")){
-    getCraft25ResourceButton("steel").click();
+    getCraftSingleResourceButton("steel").click();
   }
 
   //mineral -> slab
   if (isResourceUnlocked("slab") && isResourceAboveThreshold("minerals")){
-    getCraft25ResourceButton("slab").click();
+    getCraftSingleResourceButton("slab").click();
   }
 
   //iron -> plate
   if (isResourceUnlocked("plate") && isResourceAboveThreshold("iron")){
-    getCraft25ResourceButton("plate").click();
+    getCraftSingleResourceButton("plate").click();
   }
 
   //oil -> kerosene
