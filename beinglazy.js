@@ -186,23 +186,23 @@ function autoHunt(){
 }
 
 function autoManuscriptManagement(){
-  if (!getReourceRow("manuscript")
-    getResourceRow("manuscript").recipeRef.prices[0].val < getResource("parchment").value
-    && getResourceRow("manuscript").recipeRef.prices[1].val < getResource("culture").value){
+  if (!getReourceRow("manuscript") &&
+    getResourceRow("manuscript").recipeRef.prices[0].val < getResource("parchment").value &&
+    getResourceRow("manuscript").recipeRef.prices[1].val < getResource("culture").value){
     getCraftSingleResourceButton("manuscript").click();
   }
 }
 
 function autoCompendiumManagement(){
-  if (!getReourceRow("compedium")
-    (getResource("science").maxValue * resourceThreshold) < getResource("science").value
-    && getResourceRow("compedium").recipeRef.prices[0].val < getResource("manuscript").value){
+  if (!getReourceRow("compedium") &&
+    (getResource("science").maxValue * resourceThreshold) < getResource("science").value &&
+    getResourceRow("compedium").recipeRef.prices[0].val < getResource("manuscript").value){
     getCraftSingleResourceButton("compedium").click();
   }
 }
 
 function autoParchmentManagement(){
-  if (!getReourceRow("parchment") getResource("furs").value > rareResources.furs.minThreshold){
+  if (!getReourceRow("parchment") && getResource("furs").value > rareResources.furs.minThreshold){
     getCraftSingleResourceButton("parchment").click();
   }
 }
