@@ -48,32 +48,32 @@ function isResourceAboveThreshold(resource){
 // convert resources when >90% full
 function autoConvert(){
   //catnip -> wood
-  if (!getReourceRow("wood") && isResourceAboveThreshold("catnip")){
+  if (!getResourceRow("wood") && isResourceAboveThreshold("catnip")){
     getCraft25ResourceButton("wood").click();
   }
 
   //wood -> beam
-  if (!getReourceRow("beam") && isResourceAboveThreshold("wood")){
+  if (!getResourceRow("beam") && isResourceAboveThreshold("wood")){
     getCraft25ResourceButton("beam").click();
   }
 
   //coal -> steel
-  if (!getReourceRow("steel") && isResourceAboveThreshold("coal")){
+  if (!getResourceRow("steel") && isResourceAboveThreshold("coal")){
     getCraft25ResourceButton("steel").click();
   }
 
   //mineral -> slab
-  if (!getReourceRow("slab") && isResourceAboveThreshold("minerals")){
+  if (!getResourceRow("slab") && isResourceAboveThreshold("minerals")){
     getCraft25ResourceButton("slab").click();
   }
 
   //iron -> plate
-  if (!getReourceRow("plate") && isResourceAboveThreshold("iron")){
+  if (!getResourceRow("plate") && isResourceAboveThreshold("iron")){
     getCraft25ResourceButton("plate").click();
   }
 
   //oil -> kerosene
-  if (!getReourceRow("kerosene") && isResourceAboveThreshold("oil")){
+  if (!getResourceRow("kerosene") && isResourceAboveThreshold("oil")){
     getCraftAllResourceButton("kerosene").click();
   }
 }
@@ -83,7 +83,7 @@ function updateReligionTabUpgradibility(){
   let resourceCapOkay = true;
   let upgradesRemaining = false;
 
-  if (gamePage.religionTab.transcendBtn.visible != 1){
+  if (gamePage.religionTab.visible && gamePage.religionTab.transcendBtn.visible != 1){
     for (var i in gamePage.religionTab.rUpgradeButtons){
       //look for available upgrades haven't been completed yet
       if (gamePage.religionTab.rUpgradeButtons[i].visible && !gamePage.religionTab.rUpgradeButtons[i].getName().includes("complete")){
@@ -186,7 +186,7 @@ function autoHunt(){
 }
 
 function autoManuscriptManagement(){
-  if (!getReourceRow("manuscript") &&
+  if (!getResourceRow("manuscript") &&
     getResourceRow("manuscript").recipeRef.prices[0].val < getResource("parchment").value &&
     getResourceRow("manuscript").recipeRef.prices[1].val < getResource("culture").value){
     getCraftSingleResourceButton("manuscript").click();
@@ -194,7 +194,7 @@ function autoManuscriptManagement(){
 }
 
 function autoCompendiumManagement(){
-  if (!getReourceRow("compedium") &&
+  if (!getResourceRow("compedium") &&
     (getResource("science").maxValue * resourceThreshold) < getResource("science").value &&
     getResourceRow("compedium").recipeRef.prices[0].val < getResource("manuscript").value){
     getCraftSingleResourceButton("compedium").click();
@@ -202,7 +202,7 @@ function autoCompendiumManagement(){
 }
 
 function autoParchmentManagement(){
-  if (!getReourceRow("parchment") && getResource("furs").value > rareResources.furs.minThreshold){
+  if (!getResourceRow("parchment") && getResource("furs").value > rareResources.furs.minThreshold){
     getCraftSingleResourceButton("parchment").click();
   }
 }
