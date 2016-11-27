@@ -77,7 +77,7 @@ function autoConvert(){
   }
 
   //oil -> kerosene
-  if isResourceUnlocked("kerosene") && isResourceAboveThreshold("oil")){
+  if (isResourceUnlocked("kerosene") && isResourceAboveThreshold("oil")){
     getCraftAllResourceButton("kerosene").click();
   }
 }
