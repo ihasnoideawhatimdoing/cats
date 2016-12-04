@@ -132,11 +132,13 @@ function autoPray(){
 function autoTrade(){
   if (tradeToggle){
     if (gamePage.diplomacyTab.visible && gamePage.diplomacyTab.racePanels.length != 0){
-      if (!religionTabCanUpgrade && (getResource("gold").value > getResource("gold").maxValue * goldThreshold)
-      && (getResource("manpower").value > getResource("manpower").maxValue * catPowerThreshold)) {
       
+      if (!religionTabCanUpgrade && (getResource("gold").value > getResource("gold").maxValue * goldThreshold)
+      && (getResource("manpower").value > getResource("manpower").maxValue * catPowerThreshold)) {      
         for (var i in gamePage.diplomacyTab.racePanels){
-          gamePage.diplomacyTab.racePanels[i].tradeBtn.onClick();
+          if (!gamePage.diplomacyTab.racePanels[i].race.name == "dragons"){
+            gamePage.diplomacyTab.racePanels[i].tradeBtn.onClick();
+          };          
         };
         gamePage.villageTab.huntBtn.onClick();
       }
