@@ -136,7 +136,7 @@ function autoTrade(){
       if (!religionTabCanUpgrade && (getResource("gold").value > getResource("gold").maxValue * goldThreshold)
       && (getResource("manpower").value > getResource("manpower").maxValue * catPowerThreshold)) {      
         for (var i in gamePage.diplomacyTab.racePanels){
-          if (!(gamePage.diplomacyTab.racePanels[i].race.name == "dragons"){
+          if (!(gamePage.diplomacyTab.racePanels[i].race.name == "dragons")){
             gamePage.diplomacyTab.racePanels[i].tradeBtn.onClick();
           };          
         };
